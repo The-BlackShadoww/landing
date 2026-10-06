@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, DM_Sans, Geist_Mono } from "next/font/google";
+import { Host_Grotesk, Geist_Mono } from "next/font/google";
+import SmoothScroll from "@/components/motion/SmoothScroll";
 import "./globals.css";
 
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
+const hostGrotesk = Host_Grotesk({
+  variable: "--font-host-grotesk",
   subsets: ["latin"],
-  weight: "400",
-});
-
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600"],
 });
 
 const geistMono = Geist_Mono({
@@ -20,29 +15,32 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nexus — Operations Infrastructure for Modern Teams",
+  title: "Plinth | The AI-native operating system for manufacturers",
   description:
-    "Nexus unifies your workflows, automations, and analytics into a single operations layer. Built for teams that move fast and scale further.",
-  keywords: ["operations", "workflow automation", "team collaboration", "SaaS", "enterprise"],
+    "Plinth connects inventory, production, purchasing and orders into one source of truth for make-to-order and make-to-stock manufacturers.",
   openGraph: {
-    title: "Nexus — Operations Infrastructure for Modern Teams",
+    title: "Plinth | The AI-native operating system for manufacturers",
     description:
-      "Unify your workflows, automations, and analytics into a single operations layer.",
+      "One source of truth across inventory, production, purchasing and orders.",
     type: "website",
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+// Runs before first paint: opt into motion unless the visitor prefers less.
+const motionBoot = `try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion')}catch(e){}`;
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${dmSans.variable} ${geistMono.variable}`}
+      className={`${hostGrotesk.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
     >
-      <body className="bg-[#0a0a0a] text-[#f0ede8] antialiased overflow-x-hidden">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: motionBoot }} />
+      </head>
+      <body>
+        <SmoothScroll />
         {children}
       </body>
     </html>

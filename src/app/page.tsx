@@ -1,27 +1,33 @@
-import Navigation from "@/components/layout/Navigation";
+import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
-import StatsBar from "@/components/sections/StatsBar";
-import ProductOverview from "@/components/sections/ProductOverview";
-import FeaturesBento from "@/components/sections/FeaturesBento";
-import HowItWorks from "@/components/sections/HowItWorks";
-import Testimonials from "@/components/sections/Testimonials";
-import Pricing from "@/components/sections/Pricing";
-import CTASection from "@/components/sections/CTASection";
+import Engine from "@/components/sections/Engine";
+import ProductTabs from "@/components/sections/ProductTabs";
+import Stories from "@/components/sections/Stories";
+import Bridge from "@/components/sections/Bridge";
+import Modules from "@/components/sections/Modules";
+import Industries from "@/components/sections/Industries";
+import FinalCta from "@/components/sections/FinalCta";
 
 export default function Home() {
   return (
     <>
-      <Navigation />
+      <Header />
       <main>
         <Hero />
-        <StatsBar />
-        <ProductOverview />
-        <FeaturesBento />
-        <HowItWorks />
-        <Testimonials />
-        <Pricing />
-        <CTASection />
+        <Engine />
+        <ProductTabs />
+        <Stories />
+        <Bridge
+          title={
+            <>
+              Make the right part, for the right order, at the right time
+            </>
+          }
+        />
+        <Modules />
+        <Industries />
+        <FinalCta />
       </main>
       <Footer />
     </>

@@ -1,107 +1,277 @@
 @import "tailwindcss";
 
-/* ─── Design Tokens ─────────────────────────────────────────── */
+/* ─── Design tokens ─────────────────────────────────────────── */
 :root {
-  --bg: #0a0a0a;
-  --surface: #111111;
-  --surface-raised: #161616;
-  --border: rgba(255, 255, 255, 0.08);
-  --text-primary: #f0ede8;
-  --text-muted: #78736e;
-  --text-accent: #e8e4df;
-  --radius-card: 10px;
+  --ink: #161616;
+  --ink-2: #1d1d1c;
+  --ink-line: rgba(255, 255, 255, 0.09);
+  --ink-text: #f6f5f3;
+  --ink-muted: #9a9792;
+
+  --bone: #e7e4df;
+  --bone-2: #dfdbd5;
+  --bone-tile: #dbd7d0;
+  --bone-line: rgba(22, 22, 22, 0.09);
+  --bone-text: #161616;
+  --bone-muted: #6f6c67;
+
+  --paper: #f8f7f5;
+  --accent: #2c3bf5;
+  --iso-yellow: #f3b63f;
+  --iso-blue: #5470f2;
+  --iso-red: #ee5a48;
+
+  --frame: 1200px;
+  --gutter: 24px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ─── Tailwind v4 Theme ─────────────────────────────────────── */
 @theme inline {
-  --font-sans: var(--font-dm-sans);
-  --font-serif: var(--font-instrument-serif);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-host-grotesk), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-  --color-bg: #0a0a0a;
-  --color-surface: #111111;
-  --color-surface-raised: #161616;
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-text-primary: #f0ede8;
-  --color-text-muted: #78736e;
-  --color-text-accent: #e8e4df;
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-text: var(--ink-text);
+  --color-ink-muted: var(--ink-muted);
+  --color-bone: var(--bone);
+  --color-bone-2: var(--bone-2);
+  --color-bone-tile: var(--bone-tile);
+  --color-bone-text: var(--bone-text);
+  --color-bone-muted: var(--bone-muted);
+  --color-paper: var(--paper);
+  --color-accent: var(--accent);
 }
 
-/* ─── Base Reset ────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
+/* ─── Base ──────────────────────────────────────────────────── */
 html {
-  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  background-color: #0a0a0a;
-  color: #f0ede8;
-  font-family: var(--font-dm-sans, "DM Sans", ui-sans-serif, system-ui, sans-serif);
-  line-height: 1.6;
+  background: var(--ink);
+  color: var(--ink-text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
   overflow-x: hidden;
 }
 
-/* ─── Hero Dot Grid ─────────────────────────────────────────── */
-.dot-grid {
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-  background-size: 28px 28px;
+::selection {
+  background: var(--accent);
+  color: #fff;
 }
 
-/* ─── Subtle Noise Texture ──────────────────────────────────── */
-.noise-bg::before {
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ─── Section themes ────────────────────────────────────────── */
+.theme-ink {
+  --line: var(--ink-line);
+  --fg: var(--ink-text);
+  --muted: var(--ink-muted);
+  background: var(--ink);
+  color: var(--ink-text);
+}
+.theme-bone {
+  --line: var(--bone-line);
+  --fg: var(--bone-text);
+  --muted: var(--bone-muted);
+  background: var(--bone);
+  color: var(--bone-text);
+}
+
+/* ─── Blueprint frame ───────────────────────────────────────── */
+/* Every section shares a centred frame whose side rules line up,
+   so the page reads as one continuous drawing. */
+.frame {
+  position: relative;
+  width: 100%;
+  max-width: var(--frame);
+  margin-inline: auto;
+  border-inline: 1px solid var(--line);
+}
+@media (max-width: 1247px) {
+  .frame {
+    max-width: calc(100% - 2 * var(--gutter));
+  }
+}
+@media (max-width: 640px) {
+  .frame {
+    max-width: calc(100% - 32px);
+  }
+}
+
+.rule {
+  position: relative;
+  border-top: 1px solid var(--line);
+}
+/* Registration crosses at frame/rule intersections */
+.rule::before,
+.rule::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  width: 9px;
+  height: 9px;
+  background:
+    linear-gradient(var(--muted), var(--muted)) center / 1px 100% no-repeat,
+    linear-gradient(var(--muted), var(--muted)) center / 100% 1px no-repeat;
+  opacity: 0.55;
+}
+.rule::before {
+  left: -5px;
+}
+.rule::after {
+  right: -5px;
+}
+
+.pad-x {
+  padding-inline: clamp(20px, 3.4vw, 40px);
+}
+
+/* ─── Type ──────────────────────────────────────────────────── */
+.display {
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+}
+.h2 {
+  font-weight: 500;
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  letter-spacing: -0.032em;
+  line-height: 1.08;
+}
+.h3 {
+  font-weight: 500;
+  font-size: clamp(1.25rem, 1.7vw, 1.5rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ─── Buttons ───────────────────────────────────────────────── */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding-inline: 20px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.25s var(--ease-out), color 0.35s var(--ease-out);
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-light {
+  background: var(--bone);
+  color: var(--ink);
+}
+.btn-dark {
+  background: var(--ink);
+  color: var(--ink-text);
+}
+.btn-ghost {
+  background: rgba(22, 22, 22, 0.06);
+  color: var(--ink);
+}
+/* Fill sweep on hover */
+.btn::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  opacity: 0.4;
+  z-index: -1;
+  border-radius: inherit;
+  transform: translateY(101%);
+  transition: transform 0.45s var(--ease-out);
+}
+.btn-light::before {
+  background: #fff;
+}
+.btn-dark::before {
+  background: #34332f;
+}
+.btn-ghost::before {
+  background: rgba(22, 22, 22, 0.1);
+}
+.btn:hover::before {
+  transform: translateY(0);
+}
+.btn .arrow {
+  transition: transform 0.35s var(--ease-out);
+}
+.btn:hover .arrow {
+  transform: translateX(3px);
 }
 
-/* ─── Utility Classes ───────────────────────────────────────── */
-.section-label {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+.link-underline {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.4s var(--ease-out);
+}
+.link-underline:hover {
+  background-size: 100% 1px;
 }
 
-.card-border {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
+/* ─── Patterns ──────────────────────────────────────────────── */
+.iso-grid {
+  background-image:
+    repeating-linear-gradient(30deg, var(--line) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(150deg, var(--line) 0 1px, transparent 1px 64px);
 }
 
-.gsap-hidden {
-  opacity: 0;
-  transform: translateY(24px);
+/* ─── Motion bootstrapping ──────────────────────────────────── */
+/* `motion` is set on <html> before paint (unless reduced motion),
+   so elements wait hidden for GSAP instead of flashing. */
+html.motion [data-reveal],
+html.motion [data-split] {
+  visibility: hidden;
 }
 
-/* ─── Scrollbar ─────────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #0a0a0a;
-}
-::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #3a3a3a;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 
-/* ─── Selection ─────────────────────────────────────────────── */
-::selection {
-  background-color: rgba(240, 237, 232, 0.15);
-  color: #f0ede8;
+@keyframes feedIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
 }
